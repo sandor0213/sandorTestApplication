@@ -74,11 +74,6 @@ class ChargingPointsTableViewController: UITableViewController, CLLocationManage
     
     func userLocation(){
         locationManager.startUpdatingLocation() 
-        let userLocationLatitude = Double("\(self.meCoordinates.latitude)")!
-        let userLocationLongitude = Double("\(self.meCoordinates.longitude)")!
-        
-        currentUser.set(userLocationLatitude, forKey: "userLocationLatitude")
-        currentUser.set(userLocationLongitude, forKey: "userLocationLongitude")
     }
     
     
@@ -104,8 +99,17 @@ class ChargingPointsTableViewController: UITableViewController, CLLocationManage
         
         self.locationManager.stopUpdatingLocation()
         
+        let userLocationLatitude = Double("\(self.meCoordinates.latitude)")!
+        let userLocationLongitude = Double("\(self.meCoordinates.longitude)")!
+        
+        currentUser.set(userLocationLatitude, forKey: "userLocationLatitude")
+        currentUser.set(userLocationLongitude, forKey: "userLocationLongitude")
+        
         HelperAlamofires().getJsonFromGoogleDirectionApi(myLocationArray: self.myLocationArray, chargingPointsArray: self.resultArray) { (chargingPointsArrayWithDistancesSorted) in
             self.chargingPointsArrayWithDistancesSorted = chargingPointsArrayWithDistancesSorted
+            
+            self.currentUser.set("\(self.myLocationArray[0].latitude)", forKey: "userLatitude")
+            self.currentUser.set("\(self.myLocationArray[0].longitude)", forKey: "userLongitude")
             
             self.tableView.reloadData()
         }              

@@ -39,6 +39,8 @@ class DetailsChargingPointViewController: UIViewController {
     
     
     override func viewDidLoad() {
+        
+        
         self.navigationController?.isToolbarHidden = true        
         self.navigationItem.setHidesBackButton(true, animated:true)
         

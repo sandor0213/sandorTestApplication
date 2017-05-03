@@ -18,7 +18,7 @@ class HelperRegistrationViewController: NSObject {
     
     
     func validateName(firstAndLastName : String) -> Bool {
-        guard firstAndLastName.characters.count >= 5 else { return false}
+        guard firstAndLastName.characters.count > 4 else { return false}
         
         let capitalLetterRegEx  = "^[A-Za-z]+$"
         let texttest = NSPredicate(format:"SELF MATCHES %@", capitalLetterRegEx)

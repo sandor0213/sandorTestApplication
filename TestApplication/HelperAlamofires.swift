@@ -122,7 +122,7 @@ class HelperAlamofires: NSObject, CLLocationManagerDelegate {
         for item in chargingPointsArray{
             if item["owner"] != nil {
                 let chargingPointLocationString = "\(item["location"][0].stringValue),\(item["location"][1].stringValue)"
-                Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(myLocationString)&destination=\(chargingPointLocationString)&sensor=true&mode=walking&language=en&key=AIzaSyBxPYWsHOjNoqP2VoML6NuBFujn5mF2F14", method: .get).responseJSON { (response) in
+                Alamofire.request("https://maps.googleapis.com/maps/api/directions/json?origin=\(myLocationString)&destination=\(chargingPointLocationString)&sensor=true&mode=walking&language=en&key=AIzaSyCa_0wMTBNK3jlCLd0LcDXJzkO1Xf2_fv8", method: .get).responseJSON { (response) in
                     
                     let json : JSON = JSON(response.data)
                     
@@ -326,7 +326,7 @@ class HelperAlamofires: NSObject, CLLocationManagerDelegate {
         
         let userCoordinatesString : String = "\(userCoordinates.latitude),\(userCoordinates.longitude)"
         
-        Alamofire.request("https://maps.googleapis.com/maps/api/geocode/json?latlng=\(userCoordinatesString)&language=en&key=AIzaSyCowiDuW-atJSKwh5jSPNU0J5VeR9bQW70", method: .get).responseJSON { (response) in
+        Alamofire.request("https://maps.googleapis.com/maps/api/geocode/json?latlng=\(userCoordinatesString)&language=en&key=AIzaSyCa_0wMTBNK3jlCLd0LcDXJzkO1Xf2_fv8", method: .get).responseJSON { (response) in
             let json : JSON = JSON(response.data)
             let address = json["results"][0]["formatted_address"].stringValue
             completitionHandler (address) 
@@ -345,7 +345,7 @@ class HelperAlamofires: NSObject, CLLocationManagerDelegate {
             return  
         }
         
-        Alamofire.request("https://maps.googleapis.com/maps/api/geocode/json?address=\(address)&key=AIzaSyBxPYWsHOjNoqP2VoML6NuBFujn5mF2F14".replacingOccurrences(of: " ", with: "%20"), method: .get).responseJSON { (response) in
+        Alamofire.request("https://maps.googleapis.com/maps/api/geocode/json?address=\(address)&key=AIzaSyCa_0wMTBNK3jlCLd0LcDXJzkO1Xf2_fv8".replacingOccurrences(of: " ", with: "%20"), method: .get).responseJSON { (response) in
             let json : JSON = JSON(response.data)
             
             if json["status"].stringValue == "OK"{

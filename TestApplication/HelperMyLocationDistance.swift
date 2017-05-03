@@ -32,7 +32,6 @@ class HelperMyLocationDistance: NSObject, CLLocationManagerDelegate {
 
             let distanceInMeters = sqrt(pow(differenceLatitude, 2)  + pow(differenceLongitude, 2)) * 100000
             locationManager.stopUpdatingLocation()
-            
             if distanceInMeters <= 50{
 
                 
@@ -42,24 +41,5 @@ class HelperMyLocationDistance: NSObject, CLLocationManagerDelegate {
         return false
     }
     
-    
-    func distanceForReloadChargingPointsTableView (newCoordinates : CLLocationCoordinate2D) -> Bool {
-        let userLocationlatitude = currentUser.double(forKey: "userLocationLatitude")
-        let userLocationLongitude = currentUser.double(forKey: "userLocationLongitude")
-        
-       
-           
-        let differenceLatitude = userLocationlatitude - newCoordinates.latitude
-        let differenceLongitude = userLocationLongitude - newCoordinates.longitude
-        let distanceInMeters = sqrt(pow(differenceLatitude, 2) + pow(differenceLongitude, 2)) * 100000
-        
-        if distanceInMeters >= 20{
-            
-            return true
-            }
-        
-    return false    
-    
-}
     
 }

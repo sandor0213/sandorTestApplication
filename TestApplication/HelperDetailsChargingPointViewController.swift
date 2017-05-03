@@ -7,7 +7,31 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class HelperDetailsChargingPointViewController: NSObject {
-
+    
+    
+    func getChargerTypesFromArrayToString(chargerTypesArray : [JSON]) -> String {
+        var chargerTypesArrayString = [String]()
+        var chargerTypes = ""
+        
+        for item in chargerTypesArray{
+            chargerTypesArrayString.append(item["name"].stringValue)
+        }
+        for counter in 0..<chargerTypesArrayString.count {
+            if counter == 0{
+                chargerTypes = chargerTypesArrayString[counter]
+            } else {
+                chargerTypes += (", " + chargerTypesArrayString[counter])
+            }
+        }
+        return chargerTypes
+    } 
+  
+    
+    
 }
+
+
+

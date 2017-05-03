@@ -7,29 +7,51 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class ProfileViewController: UIViewController {
+    
+    @IBOutlet weak var userProfileimage: UIImageView!
+    
+    @IBOutlet weak var firstAndLastNameLabel: UILabel!
+    
+    @IBOutlet weak var usernameLabel: UILabel!
+    
+    @IBOutlet weak var emailLabel: UILabel!
+    
+    @IBOutlet weak var listButton: UIBarButtonItem!
+    
+    let currentUser = UserDefaults.standard
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isToolbarHidden = true
+        
+        self.userProfileimage.layer.cornerRadius = self.userProfileimage.frame.width / 2
+        self.userProfileimage.layer.masksToBounds = true
+        self.userProfileimage.layer.borderWidth = 3
+        self.userProfileimage.layer.borderColor = UIColor.green.cgColor
+        
+        let jsonFromLogin : JSON = HelperAlamofires().stringToJSON(self.currentUser.string(forKey: "loginJson")!)
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // set up profile datas
+        self.firstAndLastNameLabel.text = jsonFromLogin["data"]["firstName"].stringValue
+        self.usernameLabel.text = jsonFromLogin["data"]["userName"].stringValue
+        self.emailLabel.text = jsonFromLogin["data"]["email"].stringValue
+           // set up profile datas End 
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
+    
 
+    @IBAction func goToChargingPointsTableViewController(_ sender: Any) {
+        self.navigationController?.performSegue(withIdentifier: "toChargingPointsTable", sender: self.navigationController)
+    }
+    
+  
+   
 }

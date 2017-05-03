@@ -10,26 +10,53 @@ import UIKit
 
 class BatteryViewController: UIViewController {
 
+  
+    @IBOutlet weak var batteryLevelLabel: UILabel!
+    
+    @IBOutlet weak var batteryStateLabel: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+         UIDevice.current.isBatteryMonitoringEnabled = true
+     
+    }    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        // Finish observation
+//        UIDevice.current.isBatteryMonitoringEnabled = false
+//        
+//        NotificationCenter.default.removeObserver(self,
+//                                                  name: NSNotification.Name.UIDeviceBatteryStateDidChange,
+//                                                  object: nil)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    // MARK: - Internal method
+    
 
-    /*
-    // MARK: - Navigation
+    
+   
+        
+//        if status == .unplugged{
+//            showAlertInBatteryState(text: "Unplugged")
+//            
+//        }
+        
+        
+        //        self.batteryStateLabel!.text = batteryStateString
+    
+    
+    
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+
 
 }
+
+

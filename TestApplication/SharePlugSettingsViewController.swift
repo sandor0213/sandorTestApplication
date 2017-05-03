@@ -7,29 +7,107 @@
 //
 
 import UIKit
+import SwiftyJSON
+import CoreLocation
 
-class SharePlugSettingsViewController: UIViewController {
-
+class SharePlugSettingsViewController: UIViewController, CLLocationManagerDelegate {
+    
+    
+    @IBOutlet weak var sharePlugSettingsButton: UIButton!
+    
+    @IBOutlet weak var localizeAddressButton: UIButton!
+    
+    @IBOutlet weak var addressTextView: UITextView!
+    
+    @IBOutlet weak var chargersTextField: UITextField!
+    
+    @IBOutlet weak var maximumChargingTimeTextfield: UITextField!
+    
+    @IBOutlet weak var chargingConditionsTextView: UITextView!
+    
+    @IBOutlet weak var adrressDetailsTextView: UITextView!
+    
+    @IBOutlet weak var findPlugButton: UIButton!
+    
+    @IBOutlet weak var forFrameView: UIView!
+    
+    let locationManager = CLLocationManager()
+    
+    var userCoordinates = CLLocationCoordinate2D()
+    
+    let currentUser = UserDefaults.standard
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        locationManager.delegate = self
+        self.locationManager.distanceFilter = kCLLocationAccuracyNearestTenMeters
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        self.navigationItem.setHidesBackButton(true, animated:true)
+        self.navigationController?.isToolbarHidden = true
+        
+        var tapGesture = UITapGestureRecognizer(target: self, action: "forFrameViewTapped")
+        self.forFrameView.addGestureRecognizer(tapGesture)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
-    */
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if CLLocationManager.authorizationStatus() == .notDetermined {
+            self.locationManager.requestAlwaysAuthorization()
+        }
+        else if CLLocationManager.authorizationStatus() == .denied {  
+            ShowAlertForAppDelegateNSObject().showAlert(text: "To find/create a plug, you should allow geolocation usage by the program", controller: self)
+        } 
+        else if CLLocationManager.authorizationStatus() == .authorizedAlways {
+            self.locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func forFrameViewTapped() {
+        self.view.endEditing(true)
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        self.userCoordinates = (manager.location?.coordinate)!
+    }
+    
+    
+    @IBAction func LocalizaAddressAction(_ sender: Any) {
+        locationManager.startUpdatingLocation()
+        HelperAlamofires().localizeMyAddress(userCoordinates: self.userCoordinates) { (address) in
+            self.addressTextView.text = address
+        }
+    }
+    
+    
+    
+    @IBAction func sharePlugSettingsAction(_ sender: Any) {
+        if HelperSharePlug().checkPlugSettings(duration: self.maximumChargingTimeTextfield.text!, description: self.chargingConditionsTextView.text!, address: self.addressTextView.text!, addressDetail: self.adrressDetailsTextView.text!, chargers: self.chargersTextField.text!){
+            
+            HelperAlamofires().getMyLocationCoordinates(address: self.addressTextView.text!) { (status, locationLat, locationLong) in
+                
+                if status {
+                    
+                    let params = HelperSharePlug().setParamsForSharePlug(duration: self.maximumChargingTimeTextfield.text!, description: self.chargingConditionsTextView.text!, address: self.addressTextView.text!, addressDetail: self.adrressDetailsTextView.text!, chargers: self.chargersTextField.text!, locationLat: "\(locationLat)", locationLong: "\(locationLong)")
+                    
+                    
+                    HelperAlamofires().postCreatePrivateChargerPoint(params: params, hostId: self.currentUser.string(forKey: "userid")!) { (status, responenseJson) in
+                    }
+                }
+            }
+        }
+    }
+    
+    
+    
+    @IBAction func goToChargingPointsTableViewController(_ sender: Any) {
+        self.navigationController?.performSegue(withIdentifier: "toChargingPointsTable", sender: self.navigationController)
+    } 
 }

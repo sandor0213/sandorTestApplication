@@ -1,14 +1,14 @@
 //
-//  DetailsOfChargingPointViewController.swift
+//  ProfileViewController.swift
 //  TestApplication
 //
-//  Created by AzinecLLC on 3/29/17.
+//  Created by AzinecLLC on 4/25/17.
 //  Copyright © 2017 AzinecLLC. All rights reserved.
 //
 
 import UIKit
 
-class DetailsOfChargingPointViewController: UIViewController {
+class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -1,14 +1,14 @@
 //
-//  GoogleMapsGocodingApiViewController.swift
+//  MenuViewController.swift
 //  TestApplication
 //
-//  Created by AzinecLLC on 3/24/17.
+//  Created by AzinecLLC on 4/26/17.
 //  Copyright © 2017 AzinecLLC. All rights reserved.
 //
 
 import UIKit
 
-class GoogleMapsGocodingApiViewController: UIViewController {
+class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
